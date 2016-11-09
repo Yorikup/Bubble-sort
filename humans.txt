@@ -20,3 +20,6 @@
 	Email: yorik198@mail.ru
 	Vk: https://vk.com/yorikup
 	From: Армавир, Краснодарский край, Россия
+
+/* SITE */
+	Github: https://github.com/Yorikup/Bubble-sort
