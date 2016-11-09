@@ -8,14 +8,12 @@ function sortarray() {
    var count = 10;
    var x = 70;
    var tx = 49;
-   var div=document.getElementById('sort').innerHTML = '';
    var div1=document.getElementById('sorted').innerHTML = '';
                
    //Генерируем массив целых чисел от 0 до 100 и выводим его
    for (i = 0; i <count; i++)
       arr[i] = Math.floor(Math.random()*(100 - 0 + 1)) + 0;
-   //div=document.getElementById('sort');
-   //var table="<table><tr>";
+   
    for(i=0; i<arr.length; i++) {
       bubble = s.circle(x, 100, 30);
       bubble.attr({
@@ -24,9 +22,9 @@ function sortarray() {
         strokeWidth: 5
       });
 
-      var text = arr[i].toString();
+      var bubbletext = arr[i].toString();
 
-      var number = s.text(tx, 110, text);
+      var number = s.text(tx, 110, bubbletext);
       number.attr({
          fill: 'white',
          "font-size": "26px"
@@ -35,19 +33,27 @@ function sortarray() {
       numberedBubbles[i] = s.g(bubble, number);
       x += 100;
       tx += 100;
-      //table+='<td>'+arr[i]+'</td>';
    }
-   //table+='</tr></table>'
-   //div.innerHTML+=table;
                
    //Сортируем массив методом пузырька снова выводим его
-   for (var i = 0; i < count; i++)
+   /*for (var i = 0; i < count; i++)
       for (var j = 0; j < count-i; j++)
          if (arr[j]> arr[j+1]) {
+            setTimeout(move(numberedBubbles, j), 1000);
             var max = arr[j];
             arr[j] = arr[j+1];
             arr[j+1] = max;
-         }   
+         }*/
+   function sort(i=0, j=0){
+      if (arr[j]> arr[j+1]) {
+         var max = arr[j];
+         arr[j] = arr[j+1];
+         arr[j+1] = max;
+         move(numberedBubbles, j)
+      };
+      setTimeout(function(){sort(i+1, j);}, 1000);
+   };
+   sort();   
    div1=document.getElementById('sorted');
    var table1="<table><tr>";
    for(i=0; i<arr.length; i++) {
@@ -56,10 +62,15 @@ function sortarray() {
    table1+='</tr></table>'
    div1.innerHTML+=table1;
 
-   move();
 };
 
 var s = Snap("#svg");
+
+function move(numberedBubbles, j, current, next){
+   numberedBubbles[j].animate({transform:'translate(100, 0)'}, 700, mina.linear);
+   numberedBubbles[j+1].animate({transform:'translate(-100, 0)'}, 700, mina.linear);
+};
+
 /*
 var bubble = s.circle(150, 150, 50);
 bubble.attr({
