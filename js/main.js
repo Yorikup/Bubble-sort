@@ -8,6 +8,7 @@ function sortarray() {
    var count = 10;
    var x = 70;
    var tx = 49;
+   var div=document.getElementById('sort').innerHTML = '';
    var div1=document.getElementById('sorted').innerHTML = '';
                
    //Генерируем массив целых чисел от 0 до 100 и выводим его
@@ -44,31 +45,49 @@ function sortarray() {
             arr[j] = arr[j+1];
             arr[j+1] = max;
          }*/
-   function sort(i=0, j=0){
+   
+   function sort(i, j){
       if (arr[j]> arr[j+1]) {
          var max = arr[j];
          arr[j] = arr[j+1];
          arr[j+1] = max;
-         move(numberedBubbles, j)
+         move(numberedBubbles, j);
+         //var spareBubble = numberedBubbles.splice(j, 1);
+         //numberedBubbles.splice(j+1, 0, spareBubble);         
       };
-      setTimeout(function(){sort(i+1, j);}, 1000);
+      console.log(i, j);
+      if(i != 0)
+         if(j != 9){
+            setTimeout(function(){sort(i, j+1);}, 1000);
+         } else {setTimeout(function(){sort(i-1, j=0);}, 1000);
+         };
+      /*div1=document.getElementById('sorted');
+      var table1="<table><tr>";
+      for(var l=0; l<arr.length; l++) {
+         table1+='<td>'+arr[l]+'</td>';
+      }
+      table1+='</tr></table>'
+      div1.innerHTML+=table1;*/
    };
-   sort();   
-   div1=document.getElementById('sorted');
-   var table1="<table><tr>";
+   var m = 9;
+   var k = 0;
+   sort(m, k);   
+   div=document.getElementById('sort');
+   var table="<table><tr>";
    for(i=0; i<arr.length; i++) {
-      table1+='<td>'+arr[i]+'</td>';
+      table+='<td>'+arr[i]+'</td>';
    }
-   table1+='</tr></table>'
-   div1.innerHTML+=table1;
+   table+='</tr></table>'
+   div1.innerHTML+=table;
 
 };
 
 var s = Snap("#svg");
 
-function move(numberedBubbles, j, current, next){
+function move(numberedBubbles, j){
    numberedBubbles[j].animate({transform:'translate(100, 0)'}, 700, mina.linear);
    numberedBubbles[j+1].animate({transform:'translate(-100, 0)'}, 700, mina.linear);
+   //console.log(j, j+1);
 };
 
 /*
