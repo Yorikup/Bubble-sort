@@ -1,28 +1,31 @@
 var snap = Snap("#svg"),
    numbersArray = new Array(),
    numberedBubblesArray = new Array(),
-   numberedBubblesCoordsArray = new Array()
+   numberedBubblesCoordsArray = new Array();
    
 
-$('document').ready(function () {
+$('document').ready(function() {
    prepareData();
 });
 
 //$('#sortButton').click(sortarray);
 
+//Функция, которая отрисовывает на экране пузырьки с числами при загрузке страницы.
 function prepareData() {
    var numbersCount = 10,      
       bubble,
       bubbleNumber,
       bubbleText,
       bubblePosition = 70,
-      numberPosition = 47
+      numberPosition = 47;
       
+   //Получаем массив из 10 случайных чисел от 0 до 100.
    for (i = 0; i <numbersCount; i++) {
       numbersArray[i] = Math.floor(Math.random()*(100 - 0 + 1)) + 0;
-   }
+   };
 
-   for(i=0; i<numbersArray.length; i++) {
+   //Отрисовываем 10 кругов, заносим их в массив, заносим в массив данные о их координатах.
+   for (i=0; i<numbersArray.length; i++) {
 
       bubble = snap.circle(bubblePosition, 100, 30);
       bubble.attr({
@@ -48,43 +51,20 @@ function prepareData() {
 
 };
 
-/*function sortarray() {
-    var arr = new Array();
-    var numberedBubbles = new Array();
-    var count = 10;
-    var x = 70;
-    var tx = 49;
-    var div=document.getElementById('sort').innerHTML = '';
-    var div1=document.getElementById('sorted').innerHTML = '';
-                      
-    //Генерируем массив целых чисел от 0 до 100 и выводим его
-    for (i = 0; i <count; i++)
-         arr[i] = Math.floor(Math.random()*(100 - 0 + 1)) + 0;
-    
-    for(i=0; i<arr.length; i++) {
-         bubble = snap.circle(x, 100, 30);
-         bubble.attr({
-            fill: 'lightblue',
-            stroke: 'white',
-            strokeWidth: 5
-         });
+//Функция, осуществляющая перемещение пузырьков на экране. Так же вносим изменения в соответствующие массивы.
+function moveBubble(currentNumber) {
+   var step = 100;
 
-         var bubbletext = arr[i].toString();
+   numberedBubblesCoordsArray[currentNumber] += step;
+   numberedBubblesCoordsArray[currentNumber+1] -= step;
 
-         var number = snap.text(tx, 110, bubbletext);
-         number.attr({
-             fill: 'white',
-             "font-size": "26px"
-         });
+   numberedBubblesArray[currentNumber].animate({transform:'translate('+ numberedBubblesCoordsArray[currentNumber] +', 0)'}, 700, mina.linear);
+   numberedBubblesArray[currentNumber+1].animate({transform:'translate('+ numberedBubblesCoordsArray[currentNumber+1] +', 0)'}, 700, mina.linear);
+};
 
-         numberedBubbles[i] = s.g(bubble, number);
-         x += 100;
-         tx += 100;
-    }
-    
-    function sort(i, j){
-         console.log(numberedBubbles);
-         if (arr[j]> arr[j+1]) {
+function sortarray() {
+   function sort(i, j){
+       if (arr[j]> arr[j+1]) {
              var max = arr[j];
              arr[j] = arr[j+1];
              arr[j+1] = max;
@@ -102,9 +82,3 @@ function prepareData() {
     var k = 0;
     sort(m, k);   
 };
-
-function move(numberedBubbles, j){
-    numberedBubbles[j].animate({transform:'translate(100, 0)'}, 700, mina.linear);
-    numberedBubbles[j+1].animate({transform:'translate(-100, 0)'}, 700, mina.linear);
-    console.log(j, j+1);
-};*/
