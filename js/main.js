@@ -33,7 +33,7 @@ function prepareData() {
 
       bubble = snap.circle(bubblePosition, 100, 30);
       bubble.attr({
-         fill: 'lightblue',
+         fill: '#003B67',
          stroke: 'white',
          strokeWidth: 5
       });
@@ -62,8 +62,8 @@ function moveBubble(currentNumber) {
    numberedBubblesCoordsArray[currentNumber] += step;
    numberedBubblesCoordsArray[currentNumber+1] -= step;
 
-   numberedBubblesArray[currentNumber].animate({transform:'translate('+ numberedBubblesCoordsArray[currentNumber] +', 0)'}, 700, mina.linear);
-   numberedBubblesArray[currentNumber+1].animate({transform:'translate('+ numberedBubblesCoordsArray[currentNumber+1] +', 0)'}, 700, mina.linear);
+   numberedBubblesArray[currentNumber].animate({transform:'translate('+ numberedBubblesCoordsArray[currentNumber] +', 0)'}, 700, mina.backout);
+   numberedBubblesArray[currentNumber+1].animate({transform:'translate('+ numberedBubblesCoordsArray[currentNumber+1] +', 0)'}, 700, mina.backout);
 };
 
 var passCount = 9,
