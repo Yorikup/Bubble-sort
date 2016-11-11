@@ -8,7 +8,11 @@ $('document').ready(function() {
    prepareData();
 });
 
-//$('#sortButton').click(sortarray);
+$('#sortButton').click(function () {
+  sortarray();
+  $('#sortButton').val('Сортирую...');
+  $('#sortButton').attr('disabled', 'true');
+});
 
 //Функция, которая отрисовывает на экране пузырьки с числами при загрузке страницы.
 function prepareData() {
@@ -62,23 +66,56 @@ function moveBubble(currentNumber) {
    numberedBubblesArray[currentNumber+1].animate({transform:'translate('+ numberedBubblesCoordsArray[currentNumber+1] +', 0)'}, 700, mina.linear);
 };
 
+var passCount = 9,
+   currentNumber = 0,
+   tmpNumber,
+   tmpBubbleElement,
+   tmpBubbleCoord;
+
+//Рекурсивная функция, сортирующая массив. 
 function sortarray() {
-   function sort(i, j){
-       if (arr[j]> arr[j+1]) {
-             var max = arr[j];
-             arr[j] = arr[j+1];
-             arr[j+1] = max;
-             move(numberedBubbles, j);
-             var spareBubble = numberedBubbles.splice(j, 2);
-             numberedBubbles.splice(j, 0, spareBubble[1], spareBubble[0]);         
+   /*Если соседние элементы массива стоят в неправильном порядке - сначала вызывается функция, меняющая соответствующие пузырьки на экране местами.
+   Затем пока проигрывается анимация - соответствующие элементы меняются в исходном массиве, так же вносим правки в массив с пузырьками и координатами.*/
+   if (numbersArray[currentNumber] > numbersArray[currentNumber+1]) {
+      moveBubble(currentNumber);
+      
+      tmpNumber = numbersArray[currentNumber];
+      numbersArray[currentNumber] = numbersArray[currentNumber+1];
+      numbersArray[currentNumber+1] = tmpNumber;
+
+      tmpBubble = numberedBubblesArray[currentNumber];
+      numberedBubblesArray[currentNumber] = numberedBubblesArray[currentNumber+1];
+      numberedBubblesArray[currentNumber+1] = tmpBubble;
+
+      tmpBubbleCoord = numberedBubblesCoordsArray[currentNumber];
+      numberedBubblesCoordsArray[currentNumber] = numberedBubblesCoordsArray[currentNumber+1];
+      numberedBubblesCoordsArray[currentNumber+1] = tmpBubbleCoord; 
+
+      /*Если мы ещё не выполнили необходимое число проходов или на данном проходе у нас ещё остались необработанные элементы -
+      снова вызываем функцию, но с задержкой, давая время анимации.*/
+      if(passCount > 0) {
+         if(currentNumber < 9){
+            currentNumber++;
+         } else {
+            currentNumber = 0;
+            passCount--;
          };
-         if(i != 0)
-             if(j != 9){
-                  setTimeout(function(){sort(i, j+1);}, 3000);
-             } else {setTimeout(function(){sort(i-1, j=0);}, 3000);
-             };
-    };
-    var m = 9;
-    var k = 0;
-    sort(m, k);   
+         setTimeout(function() { sortarray(); }, 1000);
+      };        
+   } else {
+      /*Иначе, если текущие 2 элемента стоят в правильном порядке, но мы не выполнили необходимое количество проходов или
+      на данном проходе у нас остались необработанные элементы - мы снова вызываем функцию, но без задержки под анимацию.*/
+      if(passCount > 0) {
+         if(currentNumber < 9){
+         currentNumber++;
+         } else {
+            currentNumber = 0;
+            passCount--;
+         };
+         sortarray();
+      } else {
+         //Оповещаем пользователя об окончании сортировки.
+         $('#sortButton').val('Массив отсортирован!');
+      };
+   };   
 };
